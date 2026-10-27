@@ -1,0 +1,7 @@
+.build/
+.generator/
+.swiftpm/
+Package.resolved
+*.xcodeproj
+xcuserdata/
+.DS_Store

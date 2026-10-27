@@ -1,0 +1,6 @@
+# Options of swift-openapi-generator (see scripts/generate.sh).
+generate:
+  - types
+  - client
+accessModifier: public
+namingStrategy: idiomatic

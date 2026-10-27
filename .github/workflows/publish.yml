@@ -1,0 +1,13 @@
+name: Publish
+# Manual only. A Swift package is published by a git tag on this repository, which this workflow never creates: it builds and
+# tests the package from main, without any credential. Releasing = a human pushes the tag `1.0.0` (no `v` prefix) on a green main.
+on:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift build -c release
+      - run: swift test
