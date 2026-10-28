@@ -28,7 +28,9 @@ for try await order in controlResell.allOrders(bucket: "to_send") { print(order.
 
 // Writes (API key with `items:write` / `conversations:write`).
 let item = try await controlResell.call { try await $0.createItem(.init(body: .json(.init(name: "Jacket")))).created.body.json }
-_ = try await controlResell.call { try await $0.publishItem(.init(path: .init(id: item.id), body: .json(.init(accountIds: [accountId])))).ok }
+// publishItem, dropItemPrice and republishItem take an optional `scheduledAt` (a Date, at most 30 days ahead): the action starts then
+// instead of now (tomorrow here), and the 202 receipt (`.accepted`) carries the date.
+_ = try await controlResell.call { try await $0.publishItem(.init(path: .init(id: item.id), body: .json(.init(accountIds: [accountId], scheduledAt: Date().addingTimeInterval(86_400))))).accepted }
 
 // Webhooks (`webhooks:read` / `webhooks:write`); allWebhookEvents catches up the last 7 days.
 for try await event in controlResell.allWebhookEvents(type: "item.sold") { print(event._type) }
