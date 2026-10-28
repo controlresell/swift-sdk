@@ -779,21 +779,27 @@ extension Components {
             public var accountIds: [Swift.String]
             /// - Remark: Generated from `#/components/schemas/PublishRequest/cancelBeforeProceeding`.
             public var cancelBeforeProceeding: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/PublishRequest/scheduledAt`.
+            public var scheduledAt: Foundation.Date?
             /// Creates a new `PublishRequest`.
             ///
             /// - Parameters:
             ///   - accountIds:
             ///   - cancelBeforeProceeding:
+            ///   - scheduledAt:
             public init(
                 accountIds: [Swift.String],
-                cancelBeforeProceeding: Swift.Bool? = nil
+                cancelBeforeProceeding: Swift.Bool? = nil,
+                scheduledAt: Foundation.Date? = nil
             ) {
                 self.accountIds = accountIds
                 self.cancelBeforeProceeding = cancelBeforeProceeding
+                self.scheduledAt = scheduledAt
             }
             public enum CodingKeys: String, CodingKey {
                 case accountIds
                 case cancelBeforeProceeding
+                case scheduledAt
             }
         }
         /// - Remark: Generated from `#/components/schemas/ScheduledAction`.
@@ -843,6 +849,8 @@ extension Components {
             public var roundStep: Swift.String?
             /// - Remark: Generated from `#/components/schemas/PriceDropRequest/accountIds`.
             public var accountIds: [Swift.String]?
+            /// - Remark: Generated from `#/components/schemas/PriceDropRequest/scheduledAt`.
+            public var scheduledAt: Foundation.Date?
             /// Creates a new `PriceDropRequest`.
             ///
             /// - Parameters:
@@ -851,18 +859,21 @@ extension Components {
             ///   - roundType:
             ///   - roundStep:
             ///   - accountIds:
+            ///   - scheduledAt:
             public init(
                 _type: Swift.String,
                 value: Swift.String,
                 roundType: Swift.String? = nil,
                 roundStep: Swift.String? = nil,
-                accountIds: [Swift.String]? = nil
+                accountIds: [Swift.String]? = nil,
+                scheduledAt: Foundation.Date? = nil
             ) {
                 self._type = _type
                 self.value = value
                 self.roundType = roundType
                 self.roundStep = roundStep
                 self.accountIds = accountIds
+                self.scheduledAt = scheduledAt
             }
             public enum CodingKeys: String, CodingKey {
                 case _type = "type"
@@ -870,6 +881,7 @@ extension Components {
                 case roundType
                 case roundStep
                 case accountIds
+                case scheduledAt
             }
         }
         /// - Remark: Generated from `#/components/schemas/RepublishRequest`.
@@ -882,6 +894,8 @@ extension Components {
             public var priceVariation: Swift.String?
             /// - Remark: Generated from `#/components/schemas/RepublishRequest/allowIfDeleted`.
             public var allowIfDeleted: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/RepublishRequest/scheduledAt`.
+            public var scheduledAt: Foundation.Date?
             /// Creates a new `RepublishRequest`.
             ///
             /// - Parameters:
@@ -889,22 +903,26 @@ extension Components {
             ///   - priceDrop:
             ///   - priceVariation:
             ///   - allowIfDeleted:
+            ///   - scheduledAt:
             public init(
                 accountIds: [Swift.String]? = nil,
                 priceDrop: Components.Schemas.PriceDropRequest? = nil,
                 priceVariation: Swift.String? = nil,
-                allowIfDeleted: Swift.Bool? = nil
+                allowIfDeleted: Swift.Bool? = nil,
+                scheduledAt: Foundation.Date? = nil
             ) {
                 self.accountIds = accountIds
                 self.priceDrop = priceDrop
                 self.priceVariation = priceVariation
                 self.allowIfDeleted = allowIfDeleted
+                self.scheduledAt = scheduledAt
             }
             public enum CodingKeys: String, CodingKey {
                 case accountIds
                 case priceDrop
                 case priceVariation
                 case allowIfDeleted
+                case scheduledAt
             }
         }
         /// - Remark: Generated from `#/components/schemas/ItemUpdateRequest`.

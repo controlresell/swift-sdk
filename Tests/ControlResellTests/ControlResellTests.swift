@@ -18,6 +18,31 @@ struct ControlResellTests {
         #expect(request.header("Idempotency-Key") == nil)
     }
 
+    @Test func publishPriceDropAndRepublishCarryScheduledAt() async throws {
+        let receipt = "{\"itemId\":7,\"action\":\"publish\",\"accountIds\":[\"3f2c1c0e-5b7a-4a3e-9d1e-0a1b2c3d4e5f\"],\"scheduledAt\":\"2026-11-01T09:30:00Z\"}"
+        let (client, transport, _) = try makeClient { _ in json(receipt, status: 202) }
+        let at = Date(timeIntervalSince1970: 1_793_525_400) // 2026-11-01T09:30:00Z
+        let account = "3f2c1c0e-5b7a-4a3e-9d1e-0a1b2c3d4e5f"
+
+        let published = try await client.call {
+            try await $0.publishItem(.init(path: .init(id: 7), body: .json(.init(accountIds: [account], scheduledAt: at)))).accepted.body.json
+        }
+        _ = try await client.call {
+            try await $0.dropItemPrice(.init(path: .init(id: 7), body: .json(.init(_type: "percent", value: "10", scheduledAt: at)))).accepted
+        }
+        _ = try await client.call {
+            try await $0.republishItem(.init(path: .init(id: 7), body: .json(.init(scheduledAt: at)))).accepted
+        }
+
+        #expect(published.scheduledAt == at)
+        #expect(transport.requests.count == 3)
+        for request in transport.requests {
+            let body = try #require(JSONSerialization.jsonObject(with: Data(request.body.utf8)) as? [String: Any])
+            let sent = try #require(body["scheduledAt"] as? String)
+            #expect(ISO8601DateFormatter().date(from: sent) == at)
+        }
+    }
+
     @Test func theKeyComesFromTheEnvironmentWhenNoneIsGivenAndIsRequired() throws {
         let previous = ProcessInfo.processInfo.environment["CONTROLRESELL_API_KEY"]
         defer { if let previous { setenv("CONTROLRESELL_API_KEY", previous, 1) } else { unsetenv("CONTROLRESELL_API_KEY") } }
